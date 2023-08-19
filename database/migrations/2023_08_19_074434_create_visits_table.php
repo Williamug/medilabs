@@ -13,7 +13,21 @@ return new class extends Migration
     {
         Schema::create('visits', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->nullable();
+            $table->foreignId('patient_id')->nullable();
+            $table->date('visit_date')->nullable();
+            $table->unsignedInteger('age')->nullable();
+            $table->double('temperature')->nullable();
+            $table->double('weight')->nullable();
+            $table->double('height')->nullable();
+            $table->string('next_of_kin_name');
+            $table->string('next_of_kin_gender');
+            $table->string('relationship_to_patient');
+            $table->string('next_of_kin_phone_number');
+            $table->text('next_of_kin_emial');
+            $table->text('next_of_kin_residence');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

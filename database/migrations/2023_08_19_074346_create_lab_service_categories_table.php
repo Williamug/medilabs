@@ -13,7 +13,11 @@ return new class extends Migration
     {
         Schema::create('lab_service_categories', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->nullable();
+            $table->string('category_name');
+            $table->text('description')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -13,7 +13,12 @@ return new class extends Migration
     {
         Schema::create('lab_services', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->nullable();
+            $table->foreignId('service_category_id');
+            $table->string('service_name');
+            $table->integer('price');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -13,7 +13,12 @@ return new class extends Migration
     {
         Schema::create('result_options', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->nullable();
+            $table->string('option');
+            $table->string('code');
+            $table->string('symbol');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
