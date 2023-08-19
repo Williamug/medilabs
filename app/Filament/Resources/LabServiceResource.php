@@ -22,6 +22,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class LabServiceResource extends Resource
 {
+    protected static ?int $navigationSort = 2;
+
     protected static ?string $model = LabService::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';

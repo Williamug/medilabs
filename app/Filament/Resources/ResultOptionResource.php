@@ -17,6 +17,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ResultOptionResource extends Resource
 {
+    protected static ?int $navigationSort = 1;
+
     protected static ?string $model = ResultOption::class;
 
     protected static ?string $navigationIcon = 'tabler-list-details';
