@@ -28,6 +28,7 @@ class ResultOptionResource extends Resource
         return $form
             ->schema([
                 TextInput::make('option')
+                    ->unique(column: 'option')
                     ->minLength(3)
                     ->maxLength(255)
                     ->placeholder('(Ex. positive)')
@@ -50,6 +51,9 @@ class ResultOptionResource extends Resource
                     ->sortable(),
                 TextColumn::make('code'),
                 TextColumn::make('symbol'),
+                TextColumn::make('created_at')
+                    ->label('Created On')
+                    ->dateTime('D, d M Y | H:i:s'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -69,10 +73,10 @@ class ResultOptionResource extends Resource
             ]);
     }
 
-    public static function getRelations(): array
+    public static function getPages(): array
     {
         return [
-            //
+            'index' => Pages\ManageResultOptions::route('/'),
         ];
     }
 
@@ -82,14 +86,5 @@ class ResultOptionResource extends Resource
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListResultOptions::route('/'),
-            'create' => Pages\CreateResultOption::route('/create'),
-            'edit' => Pages\EditResultOption::route('/{record}/edit'),
-        ];
     }
 }
