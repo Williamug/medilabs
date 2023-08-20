@@ -2,14 +2,13 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\LabServiceCategoryResource\RelationManagers\CategoryNameRelationManager;
 use App\Filament\Resources\LabServiceResource\Pages;
 use App\Filament\Resources\LabServiceResource\RelationManagers;
 use App\Models\LabService;
+use App\Models\LabServiceCategory;
 use Filament\Forms;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -22,11 +21,11 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class LabServiceResource extends Resource
 {
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 3;
 
     protected static ?string $model = LabService::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-inbox-stack';
 
     public static function form(Form $form): Form
     {
@@ -42,12 +41,14 @@ class LabServiceResource extends Resource
                             ->createOptionForm([
                                 TextInput::make('category_name')
                                     ->required()
+                                    ->unique(table: LabServiceCategory::class)
                                     ->maxLength(255),
                             ])
                             ->required(),
                     ]),
                 TextInput::make('service_name')
                     ->maxLength(255)
+                    ->unique(table: LabService::class)
                     ->required(),
                 TextInput::make('price')
                     ->mask(RawJs::make(<<<'JS'
@@ -95,19 +96,10 @@ class LabServiceResource extends Resource
             ]);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListLabServices::route('/'),
-            'create' => Pages\CreateLabService::route('/create'),
-            'edit' => Pages\EditLabService::route('/{record}/edit'),
+            'index' => Pages\ManageLabServices::route('/'),
         ];
     }
 
