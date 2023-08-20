@@ -12,6 +12,8 @@ class Patient extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $casts = ['date_of_birth' => 'date'];
+
     public function visits(): HasMany
     {
         return $this->hasMany(Visit::class);
