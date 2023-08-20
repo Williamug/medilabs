@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class SpacemenResource extends Resource
 {
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 4;
 
     protected static ?string $model = Spacemen::class;
 
@@ -28,6 +28,7 @@ class SpacemenResource extends Resource
         return $form
             ->schema([
                 TextInput::make('spacemen')
+                    ->unique(table: Spacemen::class)
                     ->minLength(3)
                     ->maxLength(255)
                     ->placeholder('(Ex. Blood)')
@@ -41,7 +42,7 @@ class SpacemenResource extends Resource
             ->columns([
                 TextColumn::make('spacemen'),
                 TextColumn::make('created_at')
-                    ->dateTime('D, d M Y H:i:s'),
+                    ->dateTime('D, d M Y | H:i:s'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -49,10 +50,14 @@ class SpacemenResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ForceDeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\ForceDeleteBulkAction::make(),
+                    Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ])
             ->emptyStateActions([
@@ -60,19 +65,18 @@ class SpacemenResource extends Resource
             ]);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListSpacemens::route('/'),
-            'create' => Pages\CreateSpacemen::route('/create'),
-            'edit' => Pages\EditSpacemen::route('/{record}/edit'),
+            'index' => Pages\ManageSpacemens::route('/'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 }
