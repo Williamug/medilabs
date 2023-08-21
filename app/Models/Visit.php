@@ -11,8 +11,15 @@ class Visit extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $casts = ['created_at' => 'datetime'];
+
     public function patient(): BelongsTo
     {
         return $this->belongsTo(Patient::class);
     }
+
+    // public function test_result(): 
+    // {
+
+    // }
 }
