@@ -23,4 +23,9 @@ class Patient extends Model
     {
         return $this->belongsToMany(TestResult::class);
     }
+
+    public function next_of_kins(): BelongsToMany
+    {
+        return $this->belongsToMany(NextOfKin::class);
+    }
 }
