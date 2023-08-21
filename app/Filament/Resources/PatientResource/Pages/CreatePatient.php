@@ -10,8 +10,8 @@ class CreatePatient extends CreateRecord
 {
     protected static string $resource = PatientResource::class;
 
-    protected function getRedirectUrl(): string
-    {
-        return $this->previousUrl ?? $this->getResource()::getUrl('index');
-    }
+    // protected function getRedirectUrl(): string
+    // {
+    //     return $this->previousUrl ?? $this->getResource()::getUrl('index');
+    // }
 }
