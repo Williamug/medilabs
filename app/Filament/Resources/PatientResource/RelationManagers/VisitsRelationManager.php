@@ -2,11 +2,13 @@
 
 namespace App\Filament\Resources\PatientResource\RelationManagers;
 
+use App\Models\LabService;
 use Filament\Forms;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -43,28 +45,38 @@ class VisitsRelationManager extends RelationManager
                     ->schema([
                         // next_of_kin_name
                         TextInput::make('next_of_kin_name')
+                            ->label('Name')
                             ->maxLength(255),
                         // next_of_kin_gender
                         Radio::make('next_of_kin_gender')
+                            ->label('Gender')
                             ->options([
                                 'Male' => 'Male',
                                 'Female' => 'Female'
-                            ])
-                            ->inline(),
+                            ]),
                         // relationship_to_patient
                         TextInput::make('relationship_to_patient')
                             ->maxLength(255),
                         // next_of_kin_phone_number
                         TextInput::make('next_of_kin_phone_number')
-                            ->maxLength(255),
-                        // next_of_kin_email
-                        TextInput::make('next_of_kin_email')
+                            ->label('Phone Number')
                             ->maxLength(255),
                         // next_of_kin_residence
                         TextInput::make('next_of_kin_residence')
+                            ->label('Residence')
                             ->maxLength(255),
                     ])
                     ->columns(3),
+
+                Fieldset::make('Test Order(s)')
+                    ->schema([
+                        Select::make('id')
+                            ->label('Lab service')
+                            ->multiple()
+                            ->options(LabService::all()->pluck('service_name'))
+                            ->searchable()
+                        // ->required(),
+                    ]),
             ]);
     }
 
