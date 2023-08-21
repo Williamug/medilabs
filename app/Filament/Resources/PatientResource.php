@@ -23,6 +23,7 @@ use Filament\Infolists\Components\Group as InfoListGroup;
 use Filament\Infolists\Components\Split;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
@@ -48,7 +49,7 @@ class PatientResource extends Resource
                         Section::make()
                             ->schema([
                                 // patient number
-                                Forms\Components\TextInput::make('patient_number')
+                                TextInput::make('patient_number')
                                     ->default(function () {
                                         do {
                                             $number = random_int(
@@ -110,17 +111,76 @@ class PatientResource extends Resource
                                         ],
                                         default => [],
                                     })
-                                    ->key('dynamicTypeFields')
+                                    ->key('dynamicTypeFields'),
 
 
                                 // Select::make('blog_author_id')
                                 //     ->relationship('author', 'name')
                                 //     ->searchable()
                                 //     ->required(),
+
+
                             ])
                             ->columns(2),
                     ])
                     ->columnSpan(['lg' => fn (?Patient $record) => $record === null ? 3 : 2]),
+
+
+                // Section::make()
+                //     ->schema([
+                //         // temperature
+                //         TextInput::make('temperature')
+                //             ->numeric(),
+                //         // weight
+                //         TextInput::make('weight')
+                //             ->numeric(),
+                //         // height
+                //         TextInput::make('height')
+                //             ->numeric(),
+                //     ])
+                //     ->columns(2),
+
+                // Section::make()
+                //     ->schema([
+                //         // next of kin
+                //         Select::make('next_of_kin_id')
+                //             ->relationship('next_of_kins', 'name')
+                //             ->searchable()
+                //             ->preload()
+                //             ->createOptionForm([
+                //                 // name
+                //                 TextInput::make('name')
+                //                     ->required()
+                //                     ->maxLength(255),
+                //                 // gender
+                //                 Radio::make('gender')
+                //                     ->options([
+                //                         'Male' => 'Male',
+                //                         'Female' => 'Female'
+                //                     ])
+                //                     ->inline()
+                //                     ->required(),
+                //                 // relationship to patient
+                //                 TextInput::make('relationship_to_patient')
+                //                     ->required()
+                //                     ->maxLength(255),
+                //                 // phone number
+                //                 TextInput::make('phone_number')
+                //                     ->label('Phone number')
+                //                     ->tel(),
+                //                 // email
+                //                 TextInput::make('email')
+                //                     ->label('Email Address')
+                //                     ->email()
+                //                     ->maxLength(255),
+                //                 // residence
+                //                 TextInput::make('residence')
+                //                     ->maxLength(255),
+                //             ])
+                //             ->required(),
+                //     ])
+                //     ->columns(2),
+
 
                 Section::make()
                     ->schema([
@@ -200,29 +260,13 @@ class PatientResource extends Resource
                                 ]),
                         ])->from('lg'),
                     ]),
-                // Section::make()
-                //     ->schema([
-                //         Split::make([
-                //             Grid::make(2)
-                //                 ->schema([
-                //                     Group::make([
-                //                         TextEntry::make('patient_nuber'),
-                //                         TextEntry::make('full_name'),
-                //                     ]),
-                //                     Group::make([
-                //                         TextEntry::make('patient_number'),
-                //                         TextEntry::make('full_name'),
-                //                     ]),
-                //                 ]),
-                //         ])->from('lg'),
-                //     ]),
             ]);
     }
 
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\VisitsRelationManager::class,
         ];
     }
 
