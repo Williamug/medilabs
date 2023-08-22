@@ -210,7 +210,8 @@ class PatientResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\VisitsRelationManager::class,
+            RelationManagers\TestOrdersRelationManager::class,
+            // RelationManagers\TestResultsRelationManager::class,
         ];
     }
 
