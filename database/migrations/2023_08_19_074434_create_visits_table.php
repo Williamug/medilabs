@@ -24,7 +24,6 @@ return new class extends Migration
             $table->string('next_of_kin_gender');
             $table->string('relationship_to_patient');
             $table->string('next_of_kin_phone_number');
-            $table->text('next_of_kin_email');
             $table->text('next_of_kin_residence');
             $table->timestamps();
             $table->softDeletes();
