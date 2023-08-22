@@ -13,6 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+Route::get('/laravel/login', fn () => redirect(route('filament.auth.login')))->name('login');
+
+Route::redirect('/', '/admin/login', 301)->name('login');
+Route::redirect('/login', '/admin/login', 301)->name('login');
