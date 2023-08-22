@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->nullable();
             $table->string('category_name');
-            $table->text('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
