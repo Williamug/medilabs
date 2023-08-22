@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\PatientResource\RelationManagers;
 
 use App\Models\LabService;
+use App\Models\TestOrder;
 use Filament\Forms;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Radio;
@@ -15,6 +16,7 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class TestOrdersRelationManager extends RelationManager
@@ -67,21 +69,11 @@ class TestOrdersRelationManager extends RelationManager
                     ->columns(3),
 
                 // test order
-                // Fieldset::make('Test Order')
-                //     ->schema([
-                //         Select::make('lab_service_id')
-                //             ->label('Lab Service')
-                //             ->multiple()
-                //             ->options(LabService::all()->pluck('service_name', 'id'))
-                //             ->searchable()
-                //     ])
-
-                Repeater::make('Test Order')
+                Repeater::make('lab_service_test_orders')
+                    ->relationship()
                     ->schema([
                         Select::make('lab_service_id')
-                            ->label('Lab service')
-                            ->options(LabService::all()->pluck('service_name', 'id'))
-                            ->searchable()
+                            ->relationship('lab_service', 'service_name'),
                     ])
                     ->columnSpanFull()
             ]);
@@ -92,8 +84,13 @@ class TestOrdersRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('lab_service_id')
             ->columns([
-                // TextColumn::make('patient.full_name'),
-                // TextColumn::make('lab_services.service_name'),
+                TextColumn::make('lab_service')
+                    ->state(function (Model $record) {
+                        foreach ($record->lab_services as $lab_service) {
+                            return $lab_service->service_name;
+                        }
+                    }),
+                TextColumn::make('created_at'),
             ])
             ->filters([
                 //

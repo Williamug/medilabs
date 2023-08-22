@@ -21,6 +21,12 @@ class TestOrder extends Model
         return $this->belongsTo(Patient::class);
     }
 
+
+    public function lab_service_test_orders(): HasMany
+    {
+        return $this->hasMany(LabServiceTestOrder::class);
+    }
+
     public function lab_services(): HasMany
     {
         // Assuming lab_service_ids is the JSON column storing lab service IDs
