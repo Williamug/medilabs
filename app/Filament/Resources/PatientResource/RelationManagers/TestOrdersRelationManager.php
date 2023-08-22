@@ -1,0 +1,117 @@
+<?php
+
+namespace App\Filament\Resources\PatientResource\RelationManagers;
+
+use App\Models\LabService;
+use Filament\Forms;
+use Filament\Forms\Components\Fieldset;
+use Filament\Forms\Components\Radio;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Form;
+use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+
+class TestOrdersRelationManager extends RelationManager
+{
+    protected static string $relationship = 'test_orders';
+
+    public function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                // next of kin
+                Fieldset::make('Next of kin')
+                    ->schema([
+                        // name
+                        TextInput::make('next_of_kin_name')
+                            ->label('Name')
+                            ->maxLength(255),
+
+                        // relationship to patient
+                        TextInput::make('relation_to_patient')
+                            ->label('Relationship to patient')
+                            ->maxLength(255),
+
+
+                        // phone number
+                        TextInput::make('next_of_kin_phone_number')
+                            ->label('Phone Number')
+                            ->maxLength(255),
+
+                        // residence
+                        TextInput::make('next_of_kin_residence')
+                            ->label('Residence')
+                            ->maxLength(255),
+                    ])
+                    ->columns(4),
+
+                // measurements
+                Fieldset::make('Body measurements')
+                    ->schema([
+                        TextInput::make('temperature')
+                            ->numeric()
+                            ->maxLength(255),
+                        TextInput::make('weight')
+                            ->numeric()
+                            ->maxLength(255),
+                        TextInput::make('height')
+                            ->numeric()
+                            ->maxLength(255),
+                    ])
+                    ->columns(3),
+
+                // test order
+                // Fieldset::make('Test Order')
+                //     ->schema([
+                //         Select::make('lab_service_id')
+                //             ->label('Lab Service')
+                //             ->multiple()
+                //             ->options(LabService::all()->pluck('service_name', 'id'))
+                //             ->searchable()
+                //     ])
+
+                Repeater::make('Test Order')
+                    ->schema([
+                        Select::make('lab_service_id')
+                            ->label('Lab service')
+                            ->options(LabService::all()->pluck('service_name', 'id'))
+                            ->searchable()
+                    ])
+                    ->columnSpanFull()
+            ]);
+    }
+
+    public function table(Table $table): Table
+    {
+        return $table
+            ->recordTitleAttribute('lab_service_id')
+            ->columns([
+                // TextColumn::make('patient.full_name'),
+                // TextColumn::make('lab_services.service_name'),
+            ])
+            ->filters([
+                //
+            ])
+            ->headerActions([
+                Tables\Actions\CreateAction::make(),
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ])
+            ->emptyStateActions([
+                Tables\Actions\CreateAction::make(),
+            ]);
+    }
+}
