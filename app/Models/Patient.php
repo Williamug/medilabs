@@ -14,18 +14,12 @@ class Patient extends Model
 
     protected $casts = ['date_of_birth' => 'date'];
 
-    public function visits(): HasMany
+    public function test_results(): HasMany
     {
-        return $this->hasMany(Visit::class);
+        return $this->hasMany(TestResult::class);
     }
-
-    public function test_results(): BelongsToMany
+    public function test_orders(): HasMany
     {
-        return $this->belongsToMany(TestResult::class);
-    }
-
-    public function next_of_kins(): BelongsToMany
-    {
-        return $this->belongsToMany(NextOfKin::class);
+        return $this->hasMany(TestOrder::class);
     }
 }
