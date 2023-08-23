@@ -4,6 +4,7 @@ namespace App\Filament\Resources\PatientResource\RelationManagers;
 
 use App\Models\LabService;
 use App\Models\TestOrder;
+use Filament\Actions\CreateAction;
 use Filament\Forms;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Radio;
@@ -27,55 +28,26 @@ class TestOrdersRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                // next of kin
-                Fieldset::make('Next of kin')
-                    ->schema([
-                        // name
-                        TextInput::make('next_of_kin_name')
-                            ->label('Name')
-                            ->maxLength(255),
-
-                        // relationship to patient
-                        TextInput::make('relation_to_patient')
-                            ->label('Relationship to patient')
-                            ->maxLength(255),
-
-
-                        // phone number
-                        TextInput::make('next_of_kin_phone_number')
-                            ->label('Phone Number')
-                            ->maxLength(255),
-
-                        // residence
-                        TextInput::make('next_of_kin_residence')
-                            ->label('Residence')
-                            ->maxLength(255),
-                    ])
-                    ->columns(4),
-
-                // measurements
-                Fieldset::make('Body measurements')
-                    ->schema([
-                        TextInput::make('temperature')
-                            ->numeric()
-                            ->maxLength(255),
-                        TextInput::make('weight')
-                            ->numeric()
-                            ->maxLength(255),
-                        TextInput::make('height')
-                            ->numeric()
-                            ->maxLength(255),
-                    ])
-                    ->columns(3),
-
-                // test order
-                Repeater::make('lab_service_test_orders')
-                    ->relationship()
-                    ->schema([
-                        Select::make('lab_service_id')
-                            ->relationship('lab_service', 'service_name'),
-                    ])
-                    ->columnSpanFull()
+                TextInput::make('order_number')
+                    ->default(function () {
+                        do {
+                            $number = random_int(
+                                100000,
+                                999999
+                            );
+                        } while (TestOrder::where('order_number', '=', $number)->first());
+                        return $number;
+                    })
+                    ->disabled()
+                    ->dehydrated(),
+                Select::make('lab_service_id')
+                    ->label('Lab service')
+                    ->options(function () {
+                        return LabService::all()->pluck('service_name', 'id');
+                    })
+                    ->searchable()
+                    ->string()
+                    ->required(),
             ]);
     }
 
@@ -84,13 +56,30 @@ class TestOrdersRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('lab_service_id')
             ->columns([
-                TextColumn::make('lab_service')
-                    ->state(function (Model $record) {
-                        foreach ($record->lab_services as $lab_service) {
-                            return $lab_service->service_name;
-                        }
+                TextColumn::make('lab_service.service_name')
+                    ->sortable(),
+                TextColumn::make('lab_service.price')
+                    ->label('Price')
+                    ->money('UGX'),
+                TextColumn::make('created_at')
+                    ->label('Submitted On')
+                    ->dateTime('D, d M Y | H:i:s')
+                    ->sortable(),
+                TextColumn::make('order_number'),
+                TextColumn::make('order_staus')
+                    ->label('Order Status')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'pending' => 'warning',
+                        'received' => 'success',
+                        'rejected' => 'danger',
                     }),
-                TextColumn::make('created_at'),
+                TextColumn::make('payment_status')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'Unpaid' => 'danger',
+                        'paid' => 'success',
+                    }),
             ])
             ->filters([
                 //

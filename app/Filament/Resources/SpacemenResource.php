@@ -33,7 +33,8 @@ class SpacemenResource extends Resource
                     ->maxLength(255)
                     ->placeholder('(Ex. Blood)')
                     ->required(),
-            ]);
+            ])
+            ->columns('full');
     }
 
     public static function table(Table $table): Table
@@ -42,6 +43,7 @@ class SpacemenResource extends Resource
             ->columns([
                 TextColumn::make('spacemen'),
                 TextColumn::make('created_at')
+                    ->label('Create On')
                     ->dateTime('D, d M Y | H:i:s'),
             ])
             ->filters([
