@@ -47,6 +47,7 @@ class LabServiceResource extends Resource
                     ->maxLength(255)
                     ->required(),
                 TextInput::make('price')
+                    ->numeric()
                     // ->mask(RawJs::make(<<<'JS'
                     //     $money($input)
                     // JS))
