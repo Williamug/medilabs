@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class LabServiceCategoryResource extends Resource
 {
     protected static ?int $navigationSort = 2;
-    
+
     protected static ?string $model = LabServiceCategory::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -29,7 +29,7 @@ class LabServiceCategoryResource extends Resource
             ->schema([
                 TextInput::make('category_name')
                     ->required()
-                    ->unique(table: LabServiceCategory::class)
+                    ->unique(table: LabServiceCategory::class, ignoreRecord: true)
                     ->maxLength(255),
             ]);
     }

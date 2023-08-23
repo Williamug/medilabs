@@ -28,7 +28,7 @@ class SpacemenResource extends Resource
         return $form
             ->schema([
                 TextInput::make('spacemen')
-                    ->unique(table: Spacemen::class)
+                    ->unique(table: Spacemen::class, ignoreRecord: true)
                     ->minLength(3)
                     ->maxLength(255)
                     ->placeholder('(Ex. Blood)')
