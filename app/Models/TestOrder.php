@@ -11,8 +11,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class TestOrder extends Model
 {
     use HasFactory, SoftDeletes;
+
     protected $casts = [
-        'lab_service_id' => 'array',
+        'created_at' => 'datetime',
     ];
 
 
@@ -25,6 +26,11 @@ class TestOrder extends Model
     public function lab_service_test_orders(): HasMany
     {
         return $this->hasMany(LabServiceTestOrder::class);
+    }
+
+    public function lab_service(): BelongsTo
+    {
+        return $this->belongsTo(LabService::class);
     }
 
     public function lab_services(): HasMany
