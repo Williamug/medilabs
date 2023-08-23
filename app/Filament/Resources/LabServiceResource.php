@@ -31,8 +31,8 @@ class LabServiceResource extends Resource
     {
         return $form
             ->schema([
-                Select::make('service_category_id')
-                    ->relationship('service_category', 'category_name')
+                Select::make('lab_service_category_id')
+                    ->relationship('lab_service_category', 'category_name')
                     ->placeholder('Select service category')
                     ->searchable()
                     ->preload()
@@ -47,9 +47,9 @@ class LabServiceResource extends Resource
                     ->maxLength(255)
                     ->required(),
                 TextInput::make('price')
-                    ->mask(RawJs::make(<<<'JS'
-        $money($input)
-    JS))
+                    // ->mask(RawJs::make(<<<'JS'
+                    //     $money($input)
+                    // JS))
                     ->prefix('UGX.'),
             ]);
     }
@@ -58,7 +58,7 @@ class LabServiceResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('service_category.category_name')
+                TextColumn::make('lab_service_category.category_name')
                     ->searchable(),
                 TextColumn::make('service_name')
                     ->searchable()
