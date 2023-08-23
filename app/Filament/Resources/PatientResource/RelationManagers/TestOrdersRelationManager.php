@@ -61,23 +61,25 @@ class TestOrdersRelationManager extends RelationManager
                 TextColumn::make('lab_service.price')
                     ->label('Price')
                     ->money('UGX'),
-                TextColumn::make('created_at')
-                    ->label('Submitted On')
-                    ->dateTime('D, d M Y | H:i:s')
-                    ->sortable(),
+                // TextColumn::make('created_at')
+                //     ->label('Submitted On')
+                //     ->dateTime('D, d M Y | H:i:s')
+                //     ->sortable(),
                 TextColumn::make('order_number'),
-                TextColumn::make('order_staus')
+                TextColumn::make('order_status')
                     ->label('Order Status')
                     ->badge()
+                    ->sortable()
                     ->color(fn (string $state): string => match ($state) {
-                        'pending' => 'warning',
+                        'submitted' => 'warning',
                         'received' => 'success',
                         'rejected' => 'danger',
                     }),
                 TextColumn::make('payment_status')
                     ->badge()
+                    ->sortable()
                     ->color(fn (string $state): string => match ($state) {
-                        'Unpaid' => 'danger',
+                        'unpaid' => 'danger',
                         'paid' => 'success',
                     }),
             ])

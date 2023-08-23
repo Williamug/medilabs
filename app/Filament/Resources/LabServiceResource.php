@@ -39,12 +39,13 @@ class LabServiceResource extends Resource
                     ->createOptionForm([
                         TextInput::make('category_name')
                             ->required()
-                            ->unique(table: LabServiceCategory::class)
+                            ->unique(table: LabServiceCategory::class, ignoreRecord: true)
                             ->maxLength(255),
                     ])
                     ->required(),
                 TextInput::make('service_name')
                     ->maxLength(255)
+                    ->unique(table: LabService::class, ignoreRecord: true)
                     ->required(),
                 TextInput::make('price')
                     ->numeric()

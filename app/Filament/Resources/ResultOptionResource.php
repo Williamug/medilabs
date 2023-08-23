@@ -28,7 +28,7 @@ class ResultOptionResource extends Resource
         return $form
             ->schema([
                 TextInput::make('option')
-                    ->unique(column: 'option')
+                    ->unique(column: 'option', ignoreRecord: true)
                     ->minLength(3)
                     ->maxLength(255)
                     ->placeholder('(Ex. positive)')
