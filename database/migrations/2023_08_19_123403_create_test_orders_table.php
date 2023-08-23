@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('test_results', function (Blueprint $table) {
+        Schema::create('test_orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->nullable();
-            $table->foreignId('lab_service_id')->nullable();
-            $table->text('spacemen_id')->nullable();
-            $table->foreignId('result_option_id')->nullable();
-            $table->string('test_identity')->nullable();
-            $table->string('result_status')->nullable();
-            $table->text('comment')->nullable();
+            $table->foreignId('lab_service_id');
+            $table->foreignId('patient_id')->nullable();
+            $table->string('order_number')->nullable();
+            $table->string('payment_status')->default('unpaid');
+            $table->string('order_status')->default('submitted');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('test_results');
+        Schema::dropIfExists('test_orders');
     }
 };

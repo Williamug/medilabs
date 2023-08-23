@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\PatientResource\Pages;
 use App\Filament\Resources\PatientResource\RelationManagers;
 use App\Models\Patient;
+use Filament\Actions\CreateAction;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
@@ -112,14 +113,6 @@ class PatientResource extends Resource
                                         default => [],
                                     })
                                     ->key('dynamicTypeFields'),
-
-
-                                // Select::make('blog_author_id')
-                                //     ->relationship('author', 'name')
-                                //     ->searchable()
-                                //     ->required(),
-
-
                             ])
                             ->columns(2),
                     ])
@@ -210,7 +203,8 @@ class PatientResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\VisitsRelationManager::class,
+            RelationManagers\TestOrdersRelationManager::class,
+            RelationManagers\PatientVisitsRelationManager::class,
         ];
     }
 

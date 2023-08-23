@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('patient_test_result', function (Blueprint $table) {
+        Schema::create('lab_service_test_results', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('test_result_id');
-            $table->unsignedBigInteger('patient_id');
+            $table->foreignId('test_result_id');
+            $table->foreignId('lab_service_id');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('patient_test_result');
+        Schema::dropIfExists('lab_service_test_results');
     }
 };

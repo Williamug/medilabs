@@ -2,58 +2,43 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\SpacemenResource\Pages;
-use App\Filament\Resources\SpacemenResource\RelationManagers;
-use App\Models\Spacemen;
+use App\Filament\Resources\TestResultResource\Pages;
+use App\Filament\Resources\TestResultResource\RelationManagers;
+use App\Models\TestResult;
 use Filament\Forms;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class SpacemenResource extends Resource
+class TestResultResource extends Resource
 {
-    protected static ?int $navigationSort = 4;
-
-    protected static ?string $model = Spacemen::class;
-
-    protected static ?string $navigationIcon = 'heroicon-o-sparkles';
+    protected static ?string $model = TestResult::class;
+    protected static ?int $navigationSort = 6;
+    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TextInput::make('spacemen')
-                    ->unique(table: Spacemen::class)
-                    ->minLength(3)
-                    ->maxLength(255)
-                    ->placeholder('(Ex. Blood)')
-                    ->required(),
-            ])
-            ->columns('full');
+                // 
+            ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make('spacemen'),
-                TextColumn::make('created_at')
-                    ->label('Create On')
-                    ->dateTime('D, d M Y | H:i:s'),
+                //
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-                Tables\Actions\ForceDeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -67,10 +52,20 @@ class SpacemenResource extends Resource
             ]);
     }
 
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageSpacemens::route('/'),
+            'index' => Pages\ListTestResults::route('/'),
+            'create' => Pages\CreateTestResult::route('/create'),
+            'view' => Pages\ViewTestResult::route('/{record}'),
+            'edit' => Pages\EditTestResult::route('/{record}/edit'),
         ];
     }
 
