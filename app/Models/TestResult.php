@@ -17,4 +17,10 @@ class TestResult extends Model
     {
         return $this->belongsTo(Patient::class);
     }
+
+
+    public function lab_service_test_results(): HasMany
+    {
+        return $this->hasMany(LabServiceTestOrder::class);
+    }
 }
